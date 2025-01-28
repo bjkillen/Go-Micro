@@ -31,3 +31,8 @@ start: build_front
 	@echo "Starting front end build"
 	cd ../front-end && go build -o ${FRONT_END_BINARY} ./cmd/web
 	cd ../front-end && ./${FRONT_END_BINARY} &
+
+stop:
+	@echo "Stopping front end..."
+	@-pkill -SIGTERM -f "./${FRONT_END_BINARY}"
+	@echo "Stopped front end!"
