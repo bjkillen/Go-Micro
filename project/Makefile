@@ -1,11 +1,12 @@
 FRONT_END_BINARY=frontApp
 BROKER_BINARY=brokerApp
+AUTH_BINARY=authApp
 
 up:
 	@echo "Starting Docker images .."
 	docker compose up -d
 
-up_build: build_broker
+up_build: build_broker build_auth
 	@echo "Stopping docker images (if running...)"
 	docker compose down
 	@echo "Building (when required) and starting docker images..."
@@ -36,3 +37,8 @@ stop:
 	@echo "Stopping front end..."
 	@-pkill -SIGTERM -f "./${FRONT_END_BINARY}"
 	@echo "Stopped front end!"
+
+build_auth:
+	@echo "Building auth binary..."
+	cd ../authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api
+	@echo "Done!"
